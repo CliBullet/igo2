@@ -24,8 +24,8 @@ func (a *StringSlice) Scan(src interface{}) error {
 	if !ok {
 		return fmt.Errorf("unable to scan")
 	}
-	value := strings.Replace(string(val), "{", "", 1)
-	value = strings.Replace(value, "}", "", 1)
+	value := strings.TrimPrefix(string(val), "{")
+	value = strings.TrimSuffix(value, "}")
 	*a = strings.Split(value, ",")
 	return nil
 }
