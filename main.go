@@ -36,7 +36,7 @@ func main() {
 	panicOnError(err)
 	defer db.Close()
 
-	id, err := CreateTask(db, "wish john", []string{"personal"})
+	id, err := CreateTask(db, "test 123", []string{"personal", "test"})
 	panicOnError(err)
 	fmt.Printf("Task %d has been created\n", id)
 
