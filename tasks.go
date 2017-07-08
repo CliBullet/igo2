@@ -9,9 +9,9 @@ type Task struct {
 	Tags        StringSlice
 }
 
-func GetAllTasks(db *gorm.DB) ([]Task, error) {
+func GetTasksByTag(db *gorm.DB, tag string) ([]Task, error) {
 	tasks := []Task{}
-	result := db.Find(&tasks)
+	result := db.Find(&tasks, "? = any(tags)", tag)
 	if result.Error != nil {
 		return nil, result.Error
 	}

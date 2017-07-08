@@ -10,8 +10,6 @@ and a table, 'tasks', with the following schema
     tags VARCHAR(10)[]
 	)
 
-	INSERT INTO tasks(name,is_completed,tags) VALUES('buy milk',false,'{home,delegate}');
-
 */
 
 import (
@@ -36,11 +34,23 @@ func main() {
 	panicOnError(err)
 	defer db.Close()
 
-	id, err := CreateTask(db, "test 123", []string{"personal", "test"})
-	panicOnError(err)
-	fmt.Printf("Task %d has been created\n", id)
+	data := []struct {
+		task string
+		tags []string
+	}{
+		{"call mom", []string{"family"}},
+		{"schedule meeting with the team", []string{"project-x"}},
+		{"prepare for client demo", []string{"slides", "project-x"}},
+		{"book ticket", []string{"travel", "delegate"}},
+	}
 
-	tasks, err := GetAllTasks(db)
+	for _, d := range data {
+		id, err := CreateTask(db, d.task, d.tags)
+		panicOnError(err)
+		fmt.Printf("(%d) - Task %s has been created\n", id, d.task)
+	}
+
+	tasks, err := GetTasksByTag(db, "project-x")
 	panicOnError(err)
 	fmt.Println(tasks)
 }
